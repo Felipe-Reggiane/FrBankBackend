@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import { AppDataSource } from "./config/database";
 
 import clienteRoutes from "./routes/clientes";
+import authRoutes from "./routes/auth";
+import contaRoutes from "./routes/contas";
 
 dotenv.config();
 
@@ -18,7 +20,11 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("API do Banco funcionando"));
 
+app.use("/clientes", clienteRoutes);
+
+app.use("/auth", authRoutes);
+
+app.use("/contas", contaRoutes);
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));
-
-app.use("/clientes", clienteRoutes);
