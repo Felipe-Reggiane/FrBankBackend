@@ -1,16 +1,16 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
-export default class Cliente {
+export default class Client {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column()
-  nome!: string;
+  name!: string;
 
   @Column({ unique: true })
   cpf!: string;
 
   @Column()
-  senha!: string;
+  password!: string;
 }

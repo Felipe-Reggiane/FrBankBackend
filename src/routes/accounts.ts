@@ -1,12 +1,12 @@
 import { Router } from "express";
 import authMiddleware from "../middleware/auth";
-import { criar, consultar } from "../controllers/ContaController";
+import { create, getAccounts } from "../controllers/AccountController";
 
 const router = Router();
 
 router.use(authMiddleware); // Protege todas as rotas abaixo
 
-router.post("/create", criar);
-router.get("/", consultar);
+router.post("/create", create);
+router.get("/", getAccounts);
 
 export default router;

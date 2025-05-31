@@ -4,9 +4,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/database";
 
-import clienteRoutes from "./routes/clientes";
+import clienteRoutes from "./routes/clients";
 import authRoutes from "./routes/auth";
-import contaRoutes from "./routes/contas";
+import accountRoutes from "./routes/accounts";
 
 dotenv.config();
 
@@ -24,7 +24,7 @@ app.use("/clientes", clienteRoutes);
 
 app.use("/auth", authRoutes);
 
-app.use("/contas", contaRoutes);
+app.use("/contas", accountRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));

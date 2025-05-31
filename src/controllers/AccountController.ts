@@ -1,33 +1,42 @@
 import { Request, Response } from "express";
-import ContaService from "../services/ContaService";
+import AccountService from "../services/AccountService";
 
-export const criar = async (req: Request, res: Response): Promise<Response> => {
+export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    if (!req.usuario?.id) {
-      return res.status(401).json({ erro: "Não autenticado" });
+    const { clienteId } = req.body;
+    if (!clienteId) {
+      res.status(400).json({ erro: "clienteId é obrigatório" });
+      return;
     }
-
-    const conta = await ContaService.criarConta(req.usuario.id);
-    return res.status(201).json(conta);
+    const account = await AccountService.createAccount(clienteId);
+    res.status(201).json(account);
+    return;
   } catch (err: any) {
-    return res.status(400).json({ erro: err.message });
+    res.status(400).json({ erro: err.message });
+    return;
   }
 };
 
-export const consultar = async (
+export const getAccounts = async (
   req: Request,
   res: Response
-): Promise<Response> => {
+): Promise<void> => {
   try {
     if (!req.usuario?.id) {
-      return res.status(401).json({ erro: "Não autenticado" });
+      res.status(401).json({ erro: "Não autenticado" });
+      return;
     }
 
     const clienteId = req.usuario?.id;
-    const conta = await ContaService.consultarConta(clienteId);
-    if (!conta) return res.status(404).json({ erro: "Conta não encontrada" });
-    return res.json(conta);
+    const conta = await AccountService.getAccounts(clienteId);
+    if (!conta) {
+      res.status(404).json({ erro: "Conta não encontrada" });
+      return;
+    }
+    res.json(conta);
+    return;
   } catch (err: any) {
-    return res.status(400).json({ erro: err.message });
+    res.status(400).json({ erro: err.message });
+    return;
   }
 };

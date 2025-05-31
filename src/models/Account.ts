@@ -5,20 +5,20 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm";
-import Cliente from "./Cliente";
+import Client from "./Client";
 
 @Entity()
-export default class Conta {
+export default class Account {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ unique: true })
-  numero!: string;
+  number!: string;
 
   @Column("decimal", { precision: 10, scale: 2, default: 0 })
-  saldo!: number;
+  balance!: number;
 
-  @ManyToOne(() => Cliente)
+  @ManyToOne(() => Client)
   @JoinColumn({ name: "cliente_id" })
-  cliente!: Cliente;
+  client!: Client;
 }
