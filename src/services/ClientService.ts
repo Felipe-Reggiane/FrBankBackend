@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 class ClientService {
   private clientRepo = AppDataSource.getRepository(Client);
 
-  async create(name: string, cpf: string, password: string) {
+  async create(name: string, cpf: string, password: string, phone: string) {
     const repeatedCpf = await this.clientRepo.findOne({ where: { cpf } });
     if (repeatedCpf) {
       throw new Error("Cliente com esse CPF já existe");
@@ -16,6 +16,7 @@ class ClientService {
       name,
       cpf,
       password: encryptedPassword,
+      phone,
     });
     return await this.clientRepo.save(newClient);
   }

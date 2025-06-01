@@ -4,8 +4,8 @@ import ClientService from "../services/ClientService";
 export default {
   async create(req: Request, res: Response) {
     try {
-      const { nome, cpf, senha } = req.body;
-      const cliente = await ClientService.create(nome, cpf, senha);
+      const { name, cpf, password, phone } = req.body;
+      const cliente = await ClientService.create(name, cpf, password, phone);
       res.status(201).json(cliente);
     } catch (err: any) {
       res.status(400).json({ erro: err.message });

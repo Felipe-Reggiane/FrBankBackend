@@ -13,4 +13,7 @@ export default class Client {
 
   @Column()
   password!: string;
+
+  @Column()
+  phone!: string;
 }

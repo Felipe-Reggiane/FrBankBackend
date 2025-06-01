@@ -3,9 +3,9 @@ import AccountService from "../services/AccountService";
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { clienteId } = req.body;
+    const clienteId = req.usuario?.id;
     if (!clienteId) {
-      res.status(400).json({ erro: "clienteId é obrigatório" });
+      res.status(401).json({ erro: "Não autenticado" });
       return;
     }
     const account = await AccountService.createAccount(clienteId);

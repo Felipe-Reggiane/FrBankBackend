@@ -24,7 +24,7 @@ app.use("/clientes", clienteRoutes);
 
 app.use("/auth", authRoutes);
 
-app.use("/contas", accountRoutes);
+app.use("/accounts", accountRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));
