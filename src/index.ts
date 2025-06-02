@@ -7,6 +7,7 @@ import { AppDataSource } from "./config/database";
 import clienteRoutes from "./routes/clients";
 import authRoutes from "./routes/auth";
 import accountRoutes from "./routes/accounts";
+import transactionsRouter from "./routes/transactions";
 
 dotenv.config();
 
@@ -25,6 +26,8 @@ app.use("/clientes", clienteRoutes);
 app.use("/auth", authRoutes);
 
 app.use("/accounts", accountRoutes);
+
+app.use("/transactions", transactionsRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));

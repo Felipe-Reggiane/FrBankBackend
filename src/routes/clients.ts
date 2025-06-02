@@ -6,9 +6,6 @@ const router = Router();
 
 router.post("/", ClientController.create);
 router.get("/", ClientController.getAll);
-
-router.get("/protegido", authMiddleware, (req, res) => {
-  res.json({ mensagem: `Olá, ${req.usuario?.nome}! Você está autenticado.` });
-});
+router.put("/:id", authMiddleware, ClientController.update);
 
 export default router;
