@@ -9,7 +9,7 @@ class AccountService {
 
   async createAccount(clienteId: number): Promise<Account> {
     const client = await this.clienteRepo.findOneBy({ id: clienteId });
-    if (!client) throw new Error("Cliente não encontrado");
+    if (!client) throw new Error("Erro: Cliente não encontrado");
 
     const initialLetters = client.name.substring(0, 2).toUpperCase();
 
@@ -43,9 +43,10 @@ class AccountService {
       where: { number: accountNumber, client: { id: clienteId } },
     });
     if (!account)
-      throw new Error("Conta não encontrada ou não pertence ao usuário");
-    if (value <= 0) throw new Error("Valor inválido");
-    if (Number(account.balance) < value) throw new Error("Saldo insuficiente");
+      throw new Error("Erro: Conta não encontrada ou não pertence ao usuário");
+    if (value <= 0) throw new Error("Erro: Valor inválido");
+    if (Number(account.balance) < value)
+      throw new Error("Erro: Saldo insuficiente");
 
     await TransactionService.create("debit", value, account);
 
@@ -62,8 +63,8 @@ class AccountService {
       where: { number: accountNumber, client: { id: clienteId } },
     });
     if (!account)
-      throw new Error("Conta não encontrada ou não pertence ao usuário");
-    if (value <= 0) throw new Error("Valor inválido");
+      throw new Error("Erro: Conta não encontrada ou não pertence ao usuário");
+    if (value <= 0) throw new Error("Erro: Valor inválido");
 
     await TransactionService.create("credit", value, account);
 

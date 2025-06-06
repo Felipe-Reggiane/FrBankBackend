@@ -34,7 +34,7 @@ class TransactionService {
       where: { number: accountNumber, client: { id: clienteId } },
     });
     if (!account)
-      throw new Error("Conta não encontrada ou não pertence ao usuário");
+      throw new Error("Erro: Conta não encontrada ou não pertence ao usuário");
 
     return this.transactionRepo.find({
       where: { account: { id: account.id } },

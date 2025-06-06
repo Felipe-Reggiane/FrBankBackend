@@ -9,12 +9,12 @@ class AuthService {
     const client = await repo.findOne({ where: { cpf } });
 
     if (!client) {
-      throw new Error("CPF ou senha inválidos");
+      throw new Error("Erro: CPF ou senha inválidos");
     }
 
     const validPassword = await bcrypt.compare(password, client.password);
     if (!validPassword) {
-      throw new Error("CPF ou senha inválidos");
+      throw new Error("Erro: CPF ou senha inválidos");
     }
 
     const token = jwt.sign(
