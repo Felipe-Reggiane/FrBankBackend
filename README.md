@@ -1,65 +1,90 @@
-🏦 FrBankBackend
-Este é o backend da aplicação FrBank, desenvolvido com Node.js e TypeScript. Ele fornece uma API RESTful para gerenciamento de contas bancárias, transações e autenticação de usuários.
+# 🏦 FrBankBackend
 
-🚀 Tecnologias Utilizadas
-Node.js
+Este é o backend da aplicação **FrBank**, desenvolvido com **Node.js** e **TypeScript**.  
+Ele fornece uma API RESTful para gerenciamento de contas bancárias, transações e autenticação de usuários.
 
-TypeScript
+---
 
-Express
+## 🚀 Tecnologias Utilizadas
 
-Prisma ORM
+- [Node.js](https://nodejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Express](https://expressjs.com/)
+- [Prisma ORM](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [JWT](https://jwt.io/) para autenticação
 
-PostgreSQL
+---
 
-JWT para autenticação
+## 📦 Pré-requisitos
 
-📦 Pré-requisitos
 Antes de começar, certifique-se de ter instalado:
 
-Node.js (versão 16 ou superior)
+- [Node.js](https://nodejs.org/) (versão 16 ou superior)
+- [npm](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
+- [PostgreSQL](https://www.postgresql.org/)
 
-npm ou Yarn
+---
 
-PostgreSQL
+## 🛠️ Instalação
 
-🛠️ Instalação
 Clone o repositório:
 
+```bash
 git clone https://github.com/Felipe-Reggiane/FrBankBackend.git
 cd FrBankBackend
+```
+
 Instale as dependências:
 
+```bash
 npm install
+```
 
-# ou
+ou
 
+```bash
 yarn install
-Configure as variáveis de ambiente:
+```
 
-Crie um arquivo .env na raiz do projeto com as seguintes variáveis:
+## 🔐 Configure as variáveis de ambiente
 
-env
+Crie um arquivo .env na raiz do projeto com o seguinte conteúdo (edite os valores conforme sua configuração):
 
-DB_HOST=host_name # need change
+```bash
+DB_HOST=host_name            # Substitua pelo host do seu banco
 DB_PORT=5432
-DB_USER=postgres
-DB_PASS=host_password # need change
-DB_NAME=db_name # need change
-PORT=3000 # need change if your frontend is running on port 3000
-JWT_SECRET=random_secret_key # need change
+DB_USER=postgres             # Usuário do PostgreSQL
+DB_PASS=host_password        # Senha do banco
+DB_NAME=db_name              # Nome do banco de dados
+PORT=3000                    # Altere se o frontend estiver na mesma porta
+JWT_SECRET=random_secret_key # Chave secreta para autenticação
+```
 
-Configure o banco de dados:
+## 🗄️ Configure o Banco de Dados
 
-criei um banco novo no pgAdmin (aplicação do postgresSQl) e configure ele com as mesmas variaveis utilizadas no .env, rode o projeto, irá aparecer logs no terminal dizendo se a conexão foi bem sucedida ou não.
+Crie um banco de dados no pgAdmin (ferramenta do PostgreSQL).
 
-▶️ Executando a Aplicação
+Utilize os mesmos valores definidos no .env
+
+Rode o projeto para verificar a conexão no terminal
+
+Se tudo estiver configurado corretamente, uma mensagem será exibida informando que a conexão foi estabelecida com sucesso.
+
+## ▶️ Executando a Aplicação
+
 Inicie o servidor de desenvolvimento:
 
+```bash
 npm run dev
+```
 
-# ou
+ou
 
+```bash
 yarn dev
+```
 
-A API estará disponível em http://localhost:3000.
+A API estará disponível em:
+
+http://localhost:3000
