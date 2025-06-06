@@ -3,14 +3,14 @@ import AuthService from "../services/AuthService";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { cpf, senha } = req.body;
+    const { cpf, password } = req.body;
 
-    if (!cpf || !senha) {
+    if (!cpf || !password) {
       res.status(400).json({ erro: "CPF e senha são obrigatórios" });
       return;
     }
 
-    const token = await AuthService.login(cpf, senha);
+    const token = await AuthService.login(cpf, password);
     res.json({ token });
   } catch (err: any) {
     res.status(401).json({ erro: err.message });

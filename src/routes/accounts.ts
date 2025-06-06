@@ -4,7 +4,7 @@ import { create, getAccounts } from "../controllers/AccountController";
 
 const router = Router();
 
-router.use(authMiddleware); // Protege todas as rotas abaixo
+router.use(authMiddleware);
 
 router.post("/create", create);
 router.get("/", getAccounts);

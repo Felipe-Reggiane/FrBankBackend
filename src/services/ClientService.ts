@@ -42,17 +42,14 @@ class ClientService {
     const accountRepo = AppDataSource.getRepository(Account);
     const transactionRepo = AppDataSource.getRepository(Transaction);
 
-    // Todas as contas do cliente
     const contas = await accountRepo.find({
       where: { client: { id: clienteId } },
     });
 
     const contasIds = contas.map((c) => c.id);
 
-    // Saldo total
     const saldoTotal = contas.reduce((acc, c) => acc + Number(c.balance), 0);
 
-    // Transações agrupadas por mês
     const transacoes = contasIds.length
       ? await transactionRepo
           .createQueryBuilder("t")
@@ -68,11 +65,10 @@ class ClientService {
           .getRawMany()
       : [];
 
-    // Organiza por mês
     const resumoPorMes: Record<string, { debit: number; credit: number }> = {};
 
     for (const t of transacoes) {
-      const mes = t.mes.toISOString().slice(0, 7); // yyyy-mm
+      const mes = t.mes.toISOString().slice(0, 7);
       if (!resumoPorMes[mes]) resumoPorMes[mes] = { debit: 0, credit: 0 };
       resumoPorMes[mes][t.type] = Number(t.total);
     }

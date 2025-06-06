@@ -10,5 +10,5 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   entities: [__dirname + "/../models/*.ts"],
-  synchronize: true, // Em produção troque para false
+  synchronize: true,
 });

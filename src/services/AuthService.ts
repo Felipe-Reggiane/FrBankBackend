@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 class AuthService {
-  async login(cpf: string, senha: string) {
+  async login(cpf: string, password: string) {
     const repo = AppDataSource.getRepository(Client);
     const client = await repo.findOne({ where: { cpf } });
 
@@ -12,8 +12,8 @@ class AuthService {
       throw new Error("CPF ou senha inválidos");
     }
 
-    const senhaValida = await bcrypt.compare(senha, client.password);
-    if (!senhaValida) {
+    const validPassword = await bcrypt.compare(password, client.password);
+    if (!validPassword) {
       throw new Error("CPF ou senha inválidos");
     }
 

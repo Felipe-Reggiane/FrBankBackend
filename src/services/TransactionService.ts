@@ -17,13 +17,11 @@ class TransactionService {
   }
 
   async getAllByUser(clienteId: number) {
-    // Busca todas as contas do cliente
     const accounts = await this.accountRepo.find({
       where: { client: { id: clienteId } },
     });
     const accountIds = accounts.map((acc) => acc.id);
 
-    // Busca todas as transações dessas contas
     return this.transactionRepo.find({
       relations: ["account"],
       where: accountIds.length > 0 ? { account: { id: In(accountIds) } } : {},
