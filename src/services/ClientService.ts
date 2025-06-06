@@ -1,6 +1,9 @@
 import { AppDataSource } from "../config/database";
 import Client from "../models/Client";
 import bcrypt from "bcrypt";
+import Transaction from "../models/Transaction";
+import { Between } from "typeorm";
+import Account from "../models/Account";
 
 class ClientService {
   private clientRepo = AppDataSource.getRepository(Client);
@@ -33,6 +36,52 @@ class ClientService {
 
   async getAll() {
     return this.clientRepo.find();
+  }
+
+  async getDetalhamento(clienteId: number) {
+    const accountRepo = AppDataSource.getRepository(Account);
+    const transactionRepo = AppDataSource.getRepository(Transaction);
+
+    // Todas as contas do cliente
+    const contas = await accountRepo.find({
+      where: { client: { id: clienteId } },
+    });
+
+    const contasIds = contas.map((c) => c.id);
+
+    // Saldo total
+    const saldoTotal = contas.reduce((acc, c) => acc + Number(c.balance), 0);
+
+    // Transações agrupadas por mês
+    const transacoes = contasIds.length
+      ? await transactionRepo
+          .createQueryBuilder("t")
+          .select([
+            "t.type AS type",
+            "DATE_TRUNC('month', t.createdAt) AS mes",
+            "SUM(t.value)::float AS total",
+          ])
+          .where("t.account_id IN (:...contasIds)", { contasIds })
+          .groupBy("mes")
+          .addGroupBy("t.type")
+          .orderBy("mes", "ASC")
+          .getRawMany()
+      : [];
+
+    // Organiza por mês
+    const resumoPorMes: Record<string, { debit: number; credit: number }> = {};
+
+    for (const t of transacoes) {
+      const mes = t.mes.toISOString().slice(0, 7); // yyyy-mm
+      if (!resumoPorMes[mes]) resumoPorMes[mes] = { debit: 0, credit: 0 };
+      resumoPorMes[mes][t.type] = Number(t.total);
+    }
+
+    return {
+      contas: contas.length,
+      saldoTotal,
+      porMes: resumoPorMes,
+    };
   }
 }
 

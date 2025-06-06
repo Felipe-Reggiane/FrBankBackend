@@ -35,4 +35,16 @@ export default {
     const clientes = await ClientService.getAll();
     res.json(clientes);
   },
+
+  async detalhamento(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const detalhamento = await ClientService.getDetalhamento(Number(id));
+      res.json(detalhamento);
+      return;
+    } catch (err: any) {
+      res.status(400).json({ erro: err.message });
+      return;
+    }
+  },
 };
