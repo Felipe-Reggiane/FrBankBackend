@@ -11,7 +11,7 @@ class ClientService {
   async create(name: string, cpf: string, password: string, phone: string) {
     const repeatedCpf = await this.clientRepo.findOne({ where: { cpf } });
     if (repeatedCpf) {
-      throw new Error("Cliente com esse CPF já existe");
+      throw new Error("Erro: CPF já cadastrado, tente outro.");
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -26,7 +26,7 @@ class ClientService {
 
   async update(id: number, phone?: string, password?: string) {
     const client = await this.clientRepo.findOne({ where: { id } });
-    if (!client) throw new Error("Cliente não encontrado");
+    if (!client) throw new Error("Erro: Cliente não encontrado");
 
     if (phone) client.phone = phone;
     if (password) client.password = await bcrypt.hash(password, 10);
