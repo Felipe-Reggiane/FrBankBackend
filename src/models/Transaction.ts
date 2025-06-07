@@ -8,14 +8,14 @@ import {
 } from "typeorm";
 import Account from "./Account";
 
-export type TransactionType = "debit" | "credit";
+export type TransactionType = "debit" | "credit" | "bonus" | "tax";
 
 @Entity()
 export default class Transaction {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: "enum", enum: ["debit", "credit"] })
+  @Column({ type: "enum", enum: ["debit", "credit", "bonus", "tax"] })
   type!: TransactionType;
 
   @Column("decimal", { precision: 10, scale: 2 })

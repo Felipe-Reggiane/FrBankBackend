@@ -18,6 +18,9 @@ export default class Account {
   @Column("decimal", { precision: 10, scale: 2, default: 0 })
   balance!: number;
 
+  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  limit!: number;
+
   @ManyToOne(() => Client)
   @JoinColumn({ name: "cliente_id" })
   client!: Client;

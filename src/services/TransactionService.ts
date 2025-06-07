@@ -7,7 +7,11 @@ class TransactionService {
   private transactionRepo = AppDataSource.getRepository(Transaction);
   private accountRepo = AppDataSource.getRepository(Account);
 
-  async create(type: "debit" | "credit", value: number, account: Account) {
+  async create(
+    type: "debit" | "credit" | "bonus" | "tax",
+    value: number,
+    account: Account
+  ) {
     const transaction = this.transactionRepo.create({
       type,
       value,
