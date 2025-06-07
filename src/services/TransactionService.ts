@@ -8,14 +8,22 @@ class TransactionService {
   private accountRepo = AppDataSource.getRepository(Account);
 
   async create(
-    type: "debit" | "credit" | "bonus" | "tax",
+    type: "debit" | "credit",
     value: number,
-    account: Account
+    account: Account,
+    operation: "deposit" | "withdraw" | "bonus" | "tax" | "transfer"
   ) {
+    if (operation === "bonus") {
+      type = "credit";
+    } else if (operation === "tax") {
+      type = "debit";
+    }
+
     const transaction = this.transactionRepo.create({
       type,
       value,
       account,
+      operation,
     });
     return this.transactionRepo.save(transaction);
   }

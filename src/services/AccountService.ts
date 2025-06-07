@@ -55,7 +55,7 @@ class AccountService {
       );
     }
 
-    await TransactionService.create("debit", value, account);
+    await TransactionService.create("debit", value, account, "withdraw");
 
     account.balance = Number(account.balance) - value;
     return this.contaRepo.save(account);
@@ -81,12 +81,12 @@ class AccountService {
       0
     );
 
-    await TransactionService.create("credit", value, account);
+    await TransactionService.create("credit", value, account, "deposit");
     account.balance = Number(account.balance) + value;
 
     if (value > saldoTotal) {
       const bonus = value * 0.1;
-      await TransactionService.create("bonus", bonus, account);
+      await TransactionService.create("credit", bonus, account, "bonus");
       account.balance = Number(account.balance) + bonus;
     }
 
@@ -170,13 +170,23 @@ class AccountService {
       taxa = value * 0.1;
       valorTransferido = value - taxa;
 
-      await TransactionService.create("tax", taxa, contaOrigem);
+      await TransactionService.create("debit", taxa, contaOrigem, "tax");
     }
 
-    await TransactionService.create("debit", valorTransferido, contaOrigem);
+    await TransactionService.create(
+      "debit",
+      valorTransferido,
+      contaOrigem,
+      "transfer"
+    );
     contaOrigem.balance = Number(contaOrigem.balance) - value;
 
-    await TransactionService.create("credit", valorTransferido, contaDestino);
+    await TransactionService.create(
+      "credit",
+      valorTransferido,
+      contaDestino,
+      "transfer"
+    );
     contaDestino.balance = Number(contaDestino.balance) + valorTransferido;
 
     await this.contaRepo.save(contaOrigem);
