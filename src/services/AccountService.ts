@@ -1,6 +1,8 @@
+import { In } from "typeorm";
 import { AppDataSource } from "../config/database";
 import Account from "../models/Account";
 import Cliente from "../models/Client";
+import Transaction from "../models/Transaction";
 import TransactionService from "./TransactionService";
 
 class AccountService {
@@ -194,6 +196,42 @@ class AccountService {
     await this.contaRepo.save(contaDestino);
 
     return { origem: contaOrigem, destino: contaDestino };
+  }
+
+  async deleteAccounts(
+    clienteId: number,
+    accountNumbers: string[]
+  ): Promise<void> {
+    const accounts = await this.contaRepo.find({
+      where: { number: In(accountNumbers), client: { id: clienteId } },
+      relations: ["client"],
+    });
+
+    console.log("accounts", accounts);
+
+    if (accounts.length === 0) {
+      throw new Error("Nenhuma conta encontrada para exclusão.");
+    }
+
+    for (const account of accounts) {
+      if (Number(account.balance) > 0) {
+        throw new Error(
+          `Não foi possível deletar a conta ${account.number}, transfira seu saldo e tente novamente`
+        );
+      }
+
+      if (Number(account.balance) < 0) {
+        throw new Error(
+          `Não foi possível deletar a conta ${account.number}, pague sua dívida e tente novamente`
+        );
+      }
+
+      await AppDataSource.getRepository(Transaction).delete({
+        account: { id: account.id },
+      });
+
+      await this.contaRepo.delete({ id: account.id });
+    }
   }
 }
 

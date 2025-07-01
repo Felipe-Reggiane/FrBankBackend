@@ -2,6 +2,7 @@ import { Router } from "express";
 import authMiddleware from "../middleware/auth";
 import {
   create,
+  deleteAccounts,
   getAccounts,
   getAllAccounts,
   transfer,
@@ -17,6 +18,7 @@ router.get("/", getAccounts);
 router.put("/update-limit", updateLimit);
 router.get("/all", getAllAccounts);
 router.post("/transfer", transfer);
+router.delete("/delete", deleteAccounts);
 
 export default router;
 
@@ -125,4 +127,48 @@ export default router;
  *         description: Transferência realizada com sucesso
  *       400:
  *         description: Dados inválidos ou saldo insuficiente
+ */
+/**
+ * @swagger
+ * /accounts/delete:
+ *   delete:
+ *     summary: Deleta uma ou mais contas do cliente autenticado
+ *     tags: [Accounts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               accountNumbers:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["TE-123456", "TE-654321"]
+ *             required:
+ *               - accountNumbers
+ *     responses:
+ *       200:
+ *         description: Contas deletadas com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensagem:
+ *                   type: string
+ *                   example: "Contas deletadas com sucesso"
+ *       400:
+ *         description: Erro na requisição ou saldo inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 erro:
+ *                   type: string
+ *                   example: "Não foi possível deletar a conta TE-123456, transfira seu saldo e tente novamente"
+ *       401:
+ *         description: Não autenticado
  */

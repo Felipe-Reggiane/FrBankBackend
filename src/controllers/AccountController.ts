@@ -123,3 +123,29 @@ export const transfer = async (req: Request, res: Response): Promise<void> => {
     return;
   }
 };
+
+export const deleteAccounts = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const clienteId = req.usuario?.id;
+    const { accountNumbers } = req.body;
+    console.log("clienteId", clienteId);
+    console.log("accountNumbers", accountNumbers);
+
+    if (!clienteId || !accountNumbers || !Array.isArray(accountNumbers)) {
+      console.log("Dados obrigatórios não informados");
+      res.status(400).json({ erro: "Dados obrigatórios não informados" });
+      return;
+    }
+
+    await AccountService.deleteAccounts(clienteId, accountNumbers);
+
+    res.status(200).json({ mensagem: "Contas deletadas com sucesso" });
+    return;
+  } catch (err: any) {
+    res.status(400).json({ erro: err.message });
+    return;
+  }
+};
